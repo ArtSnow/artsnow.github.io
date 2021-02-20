@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script type="text/javascript" src="crafty.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>*{margin:0;}</style>
+</head>
+<body>
+
+	<div id="game" style="background-color: darkgreen"></div>
+
+	<script>
+		var timer = 0, timer_end, timer_end_trigger = false;
+		var window_width = window.screen.width, window_height = window.screen.height;
+		var game_width = 900, game_height = 1600;
+		var scale_screen = (window_height/window_width > game_height/game_width ? window_width / game_width:window_height / game_height);
+		var scale_left = Math.abs(game_width*scale_screen - window_width)/2;
+		Crafty.init(window_width, window_height, document.getElementById('game'));
+		
+		function game_timer({dt}){
+			if (timer >= timer_end) {
+				timer_end_trigger = true;
+				game_manager.unbind("UpdateFrame", game_timer);
+			}
+			timer += (dt / 1000);
+		}
+
+		function convert_bytes_text(bytes) {
+			if (bytes < 1024) return `${bytes} Bytes`
+			else if (bytes < 1024**2) return `${Math.floor(bytes/1024)} KBytes`
+			else if (bytes < 1024**3) return `${Math.floor(bytes/1024**2)} MBytes`
+			else if (bytes < 1024**4) return `${Math.floor(bytes/1024**3)} GBytes`
+			else if (bytes < 1024**5) return `${Math.floor(bytes/1024**4)} TBytes`
+		}
+
+		function create_cells() {
+			for (let i = 1; i <= 9; i++) {
+				array.push({
+					body:Crafty.e('2D, Canvas, empty_byte')
+					  	.attr({x: (110+240*((i-1)%3))*scale_screen+scale_left, y: 0.25*window_height+(240*(Math.floor((i-1)/3)))*scale_screen, w: 200*scale_screen, h: 200*scale_screen, visible:false}),
+					fill:Crafty.e('2D, Canvas, fill_byte')
+					  	.attr({x: (130+240*((i-1)%3))*scale_screen+scale_left, y: 0.25*window_height+(20+240*(Math.floor((i-1)/3)))*scale_screen, w: 160*scale_screen, h: 0*scale_screen, z:1})
+				})
+			}
+		}
+
+		function fillup({dt}){
+			if (this.h + game_data.cell_fill_speed() * (dt / 1000) > 160*scale_screen) this.h = 160*scale_screen;
+			if (this.h < 160*scale_screen) this.h += game_data.cell_fill_speed() * (dt / 1000);
+			else {
+	
+				game_data.count_cells++;
+				this.unbind("UpdateFrame", fillup)
+				if (game_data.count_cells < game_data.max_cells) array[game_data.count_cells].fill.bind("UpdateFrame", fillup)
+			}
+		}
+		
+		var flag_for_beauty_expand = 2;
+		
+		function beauty_expand_graphic({dt}) {
+			if (flag_for_beauty_expand == 0 && array[4].body.w < 680*scale_screen) {
+				array[0].body.attr({
+					w: array[0].body.w + game_data.expand_speed * (dt / 1000),
+					h: array[0].body.h + game_data.expand_speed * (dt / 1000),
+				})
+				array[1].body.attr({
+					h: array[1].body.h + game_data.expand_speed * (dt / 1000),
+				})
+				array[2].body.attr({
+					w: array[2].body.w + game_data.expand_speed * (dt / 1000),
+					h: array[2].body.h + game_data.expand_speed * (dt / 1000),
+					x: array[2].body.x - game_data.expand_speed * (dt / 1000)
+				})
+				array[3].body.attr({
+					w: array[3].body.w + game_data.expand_speed * (dt / 1000),
+				})
+				array[5].body.attr({
+					w: array[5].body.w + game_data.expand_speed * (dt / 1000),
+					x: array[5].body.x - game_data.expand_speed * (dt / 1000)
+				})
+				array[6].body.attr({
+					w: array[6].body.w + game_data.expand_speed * (dt / 1000),
+					h: array[6].body.h + game_data.expand_speed * (dt / 1000),
+					y: array[6].body.y - game_data.expand_speed * (dt / 1000)
+				})
+				array[7].body.attr({
+					h: array[7].body.h + game_data.expand_speed * (dt / 1000),
+					y: array[7].body.y - game_data.expand_speed * (dt / 1000)
+				})
+				array[8].body.attr({
+					w: array[8].body.w + game_data.expand_speed * (dt / 1000),
+					h: array[8].body.h + game_data.expand_speed * (dt / 1000),
+					x: array[8].body.x - game_data.expand_speed * (dt / 1000),
+					y: array[8].body.y - game_data.expand_speed * (dt / 1000)
+				})
+				array[0].fill.attr({
+					w: array[0].fill.w + game_data.expand_speed * (dt / 1000),
+					h: array[0].fill.h + game_data.expand_speed * (dt / 1000),
+				})
+				array[1].fill.attr({
+					h: array[1].fill.h + game_data.expand_speed * (dt / 1000),
+				})
+				array[2].fill.attr({
+					w: array[2].fill.w + game_data.expand_speed * (dt / 1000),
+					h: array[2].fill.h + game_data.expand_speed * (dt / 1000),
+					x: array[2].fill.x - game_data.expand_speed * (dt / 1000)
+				})
+				array[3].fill.attr({
+					w: array[3].fill.w + game_data.expand_speed * (dt / 1000),
+				})
+				array[5].fill.attr({
+					w: array[5].fill.w + game_data.expand_speed * (dt / 1000),
+					x: array[5].fill.x - game_data.expand_speed * (dt / 1000)
+				})
+				array[6].fill.attr({
+					w: array[6].fill.w + game_data.expand_speed * (dt / 1000),
+					h: array[6].fill.h + game_data.expand_speed * (dt / 1000),
+					y: array[6].fill.y - game_data.expand_speed * (dt / 1000)
+				})
+				array[7].fill.attr({
+					h: array[7].fill.h + game_data.expand_speed * (dt / 1000),
+					y: array[7].fill.y - game_data.expand_speed * (dt / 1000)
+				})
+				array[8].fill.attr({
+					w: array[8].fill.w + game_data.expand_speed * (dt / 1000),
+					h: array[8].fill.h + game_data.expand_speed * (dt / 1000),
+					x: array[8].fill.x - game_data.expand_speed * (dt / 1000),
+					y: array[8].fill.y - game_data.expand_speed * (dt / 1000)
+				})
+				array[4].body.attr({
+					w: array[4].body.w + game_data.expand_speed * 6 * (dt / 1000),
+					h: array[4].body.h + game_data.expand_speed * 6 * (dt / 1000),
+					x: array[4].body.x - game_data.expand_speed * 3 * (dt / 1000),
+					y: array[4].body.y - game_data.expand_speed * 3 * (dt / 1000)
+				})
+			}
+			else if (flag_for_beauty_expand == 0 && array[4].body.w >= 680*scale_screen){
+				flag_for_beauty_expand = 1;
+
+				for (let i = 1; i <= 4; i++) {
+					array[i-1].body.destroy()
+					array[i-1].fill.destroy()
+					array[9-i].body.destroy()
+					array[9-i].fill.destroy()
+				}
+				array[4].fill.attr({
+					w: 640*scale_screen,
+					h: 640*scale_screen,
+					x: 130*scale_screen+scale_left,
+					y: 0.25*window_height+20*scale_screen
+				})
+				timer_end_trigger = false;
+				timer_end = 0.5;
+				timer = 0;
+				game_manager.bind("UpdateFrame", game_timer);
+				
+			}
+			if (flag_for_beauty_expand == 1 && array[4].body.w > 200*scale_screen && timer_end_trigger) {
+
+				array[4].body.attr({
+					w: array[4].body.w - game_data.expand_speed * 6 * (dt / 1000),
+					h: array[4].body.h - game_data.expand_speed * 6 * (dt / 1000)
+				})
+				array[4].fill.attr({
+					w: array[4].fill.w - game_data.expand_speed * 6 * (dt / 1000),
+					h: array[4].fill.h - game_data.expand_speed * 6 * (dt / 1000)
+				})
+			}
+			else if (flag_for_beauty_expand == 1 && array[4].body.w <= 200*scale_screen) {
+				game_manager.unbind("UpdateFrame", beauty_expand_graphic);
+				flag_for_beauty_expand = 2;
+				array[4].body.destroy();
+				array[4].fill.destroy();
+				array = [];
+				create_cells();
+				array_visible()
+				array[game_data.count_cells].fill.bind("UpdateFrame", fillup);
+			}
+		}
+
+		function array_visible(){
+			for (let i = 1; i <= 9; i++) {
+				array[i-1].body.attr({visible:false})
+				array[i-1].fill.attr({h:0})
+				if (game_data.max_cells >= i) {
+					array[i-1].body.attr({visible:true})
+					
+				}
+			}			
+		}
+		var game_manager = Crafty.e("game_manager");
+
+		const max_cells_base = 9;
+		const byte_cost_base = 1;
+		const cell_fill_speed_base = 20;
+		var game_data = {
+			count_cells: 0,
+			max_cells: 1,
+			cell_size: 1,
+			cell_size_expand: 80,
+			cell_fill_speed_up: 502222,
+			cell_fill_speed: ()=> (cell_fill_speed_base * game_data.cell_fill_speed_up) / game_data.cell_size * scale_screen,
+			expand_speed: 80 * scale_screen,
+			count_bytes: 0.00,
+			byte_cost_up: 100,
+			byte_cost: ()=> byte_cost_base * game_data.byte_cost_up * game_data.cell_size
+		}
+		
+		var array = [];
+		
+		var assetsObj = {
+			
+			"sprites": {
+				
+				"TileMap.png": {
+					"tile": 100, 
+					"tileh": 100, 
+					"map": {
+						"empty_byte": [0,0],
+						"fill_byte": [1,0],
+						"black_piece": [2,0]
+					}
+				},
+				"button_expand_map.png": {
+					"tile": 88,
+					"tileh": 48,
+					"map": {
+						"button_expand": [0,0],
+					}
+				},
+				"button_collect_map.png": {
+					"tile": 88,
+					"tileh": 48,
+					"map": {
+						"button_collect": [0,0],
+					}
+				},
+				"menu_bottom_map.png": {
+					"tile": 264,
+					"tileh": 144,
+					"map": {
+						"button_ugrade": [0,0]
+					}
+				}
+			}
+		};
+
+		Crafty.load(assetsObj, 
+			function() {
+				create_cells();
+				array_visible();
+				
+				Crafty.e('2D, Canvas, button_ugrade, Mouse, SpriteAnimation')
+					.attr({x: 0+scale_left, y:window_height-144*scale_screen, w: 264*scale_screen, h: 144*scale_screen})
+					.reel("clicked",1,[[1,0]])
+					.reel("default",1,[[0,0]])
+					.bind("MouseOut", function(TouchPointEvent){
+						this.animate("default",1)
+					})
+					.bind("Click", function(TouchPointEvent){
+						this.animate("clicked",1)
+					})
+					
+				Crafty.e('2D, Canvas, black_piece')
+					.attr({x: 0,y: 0, w:Math.floor(window_height/window_width > game_height/game_width ? 0:scale_left), h:window_height})
+				
+				Crafty.e('2D, Canvas, black_piece')
+					.attr({x: Math.floor(window_width - (window_height/window_width > game_height/game_width ? 0:scale_left)),y: 0, w:Math.floor(window_height/window_width > game_height/game_width ? 0:scale_left), h:window_height})
+				
+				var count_bytes_text = Crafty.e('2D, DOM, Text')
+					.attr({
+						x: 250*scale_screen+scale_left,
+						y: 0.1*window_height*scale_screen,
+						w: 400*scale_screen
+					})
+					
+					.textFont({
+						size: (100*scale_screen)+'px',
+						weight: 'bold'
+					})
+					.textAlign('center')
+					.bind("UpdateFrame", function(){
+						this.text(convert_bytes_text(game_data.count_bytes))
+					})
+			
+				var button_expand = Crafty.e('2D, Canvas, button_expand, SpriteAnimation, Touch')
+					.attr({x: 120*scale_screen+scale_left, y:0.25*window_height+240*3*scale_screen, w: 176*scale_screen, h: 96*scale_screen})
+					.reel("clicked",1,[[2,0]])
+					.reel("default",1,[[0,0]])
+					.bind("TouchOut", function(TouchPointEvent){
+						this.animate("default",1)
+					})
+					.bind("TouchEnd", function(TouchPointEvent){
+						console.log("1");
+						this.animate("clicked",1)
+						if (game_data.count_cells == game_data.max_cells && game_data.max_cells != max_cells_base) {
+							game_data.count_cells = 0;
+							game_data.max_cells++;
+							array_visible();
+							array[game_data.count_cells].fill.bind("UpdateFrame", fillup)
+						}
+						else if (game_data.count_cells == game_data.max_cells && game_data.max_cells == max_cells_base) {
+							game_data.max_cells = 1;
+							game_data.count_cells = 0;
+							game_data.cell_size *= game_data.cell_size_expand;
+							flag_for_beauty_expand = 0;
+							game_manager.bind("UpdateFrame",beauty_expand_graphic);
+						}
+					})
+				var button_collect = Crafty.e('2D, Canvas, button_collect, Mouse, SpriteAnimation')
+					.attr({x: 360*scale_screen+scale_left, y:0.25*window_height+240*3*scale_screen, w: 176*scale_screen, h: 96*scale_screen})
+					.reel("clicked",1,[[2,0]])
+					.reel("default",1,[[0,0]])
+					.bind("TouchOut", function(TouchPointEvent){
+						this.animate("default",1)
+					})
+					.bind("TouchEnd", function(TouchPointEvent){
+						this.animate("clicked",1)
+						if (flag_for_beauty_expand == 2){
+							game_data.count_bytes += game_data.byte_cost() * game_data.count_cells;
+							game_data.count_cells = 0;
+							for (let i = 1; i <= 9; i++) {
+								array[i-1].fill.unbind("UpdateFrame", fillup)
+							}
+							array_visible();
+							array[game_data.count_cells].fill.bind("UpdateFrame", fillup)
+						}
+					})
+			array[game_data.count_cells].fill.bind("UpdateFrame", fillup);
+			}
+
+		);
+
+
+
+
+	</script>
+</body>
+</html>
