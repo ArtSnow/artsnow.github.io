@@ -1,66 +1,28 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="theme-color" content="#20251f">
-  <title>Кто вор? — логическая игра</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Кто украл?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="app">
-    <header class="topbar">
-      <div>
-        <div class="eyebrow">ДЕТЕКТИВНАЯ ГОЛОВОЛОМКА</div>
-        <h1>Кто вор?</h1>
-      </div>
-      <button id="resetBtn" class="icon-button" aria-label="Сбросить поле" title="Сбросить поле">↻</button>
-    </header>
-
-    <section class="puzzle-heading">
-      <div>
-        <div class="eyebrow" id="puzzleNumber">ЗАГАДКА 001</div>
-        <h2 id="roomName">Гостиная</h2>
-      </div>
-      <select id="puzzleSelect" aria-label="Выбрать загадку"></select>
-    </section>
-
-    <section class="board-section">
-      <div class="board-wrap">
-        <div id="board" class="board" aria-label="Игровое поле"></div>
-      </div>
-      <div class="board-legend">
-        <span><b class="legend-chair">●</b> кресло — место для персонажа</span>
-        <span><b class="legend-cross">×</b> исключено</span>
-      </div>
-    </section>
-
-    <section class="clues-panel">
-      <div class="section-title-row">
-        <h3>Подсказки комнаты</h3>
-        <span class="small-tag">ОБЩИЕ</span>
-      </div>
-      <ul id="globalClues" class="global-clues"></ul>
-    </section>
-
-    <section class="people-panel">
-      <div class="section-title-row">
-        <h3>Персонажи</h3>
-        <span class="muted" id="selectionHint">Выбери персонажа</span>
-      </div>
-      <div id="peopleList" class="people-list"></div>
-      <div id="selectedClues" class="selected-clues" hidden></div>
-    </section>
-
-    <section class="bottom-actions">
-      <button id="clearMarksBtn" class="secondary-button">Очистить мои крестики</button>
-      <button id="checkBtn" class="primary-button">Проверить решение</button>
-    </section>
-    <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
-    <footer>Заметки сохраняются на этом устройстве автоматически.</footer>
-  </main>
-  <script src="js/config-loader.js"></script>
-  <script src="js/game.js"></script>
-  <script src="js/main.js"></script>
+<header><b id="title"></b><span id="timer">00:00</span></header>
+<main>
+  <div id="board" class="board"></div>
+  <p id="status"></p>
+  <div class="ctl"><button id="check">Проверить</button><button id="reset" class="ghost">Сбросить</button></div>
+  <h2>Подозреваемые</h2>
+  <div id="cards"></div>
+  <h2>Общие подсказки</h2>
+  <ul id="general"></ul>
+</main>
+<nav id="bar"></nav>
+<div id="msg" hidden><div class="box"><div id="msgtxt"></div><button id="ok">Понятно</button></div></div>
+<script src="config.js"></script>
+<script src="game.js"></script>
 </body>
 </html>
