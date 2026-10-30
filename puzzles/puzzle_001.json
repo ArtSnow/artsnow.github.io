@@ -1,0 +1,207 @@
+{
+  "id": "puzzle_001",
+  "number": "001",
+  "title": "Гостиная",
+  "room": {
+    "name": "Гостиная особняка",
+    "width": 5,
+    "height": 5
+  },
+  "furniture": [
+    {
+      "id": "chair",
+      "x": 0,
+      "y": 0,
+      "canPlaceCharacter": true,
+      "label": "Кресло"
+    },
+    {
+      "id": "table",
+      "x": 1,
+      "y": 0,
+      "canPlaceCharacter": false
+    },
+    {
+      "id": "flowerpot",
+      "x": 2,
+      "y": 0,
+      "canPlaceCharacter": false
+    },
+    {
+      "id": "chair",
+      "x": 3,
+      "y": 0,
+      "canPlaceCharacter": true,
+      "label": "Кресло"
+    },
+    {
+      "id": "tv",
+      "x": 4,
+      "y": 0,
+      "canPlaceCharacter": false
+    },
+    {
+      "id": "wardrobe",
+      "x": 0,
+      "y": 1,
+      "canPlaceCharacter": false
+    },
+    {
+      "id": "chair",
+      "x": 1,
+      "y": 1,
+      "canPlaceCharacter": true,
+      "label": "Кресло"
+    },
+    {
+      "id": "table",
+      "x": 2,
+      "y": 1,
+      "canPlaceCharacter": false
+    },
+    {
+      "id": "chair",
+      "x": 4,
+      "y": 1,
+      "canPlaceCharacter": true,
+      "label": "Кресло"
+    },
+    {
+      "id": "flowerpot",
+      "x": 0,
+      "y": 2,
+      "canPlaceCharacter": false
+    },
+    {
+      "id": "chair",
+      "x": 2,
+      "y": 2,
+      "canPlaceCharacter": true,
+      "label": "Кресло"
+    },
+    {
+      "id": "tv",
+      "x": 3,
+      "y": 2,
+      "canPlaceCharacter": false
+    },
+    {
+      "id": "chair",
+      "x": 4,
+      "y": 2,
+      "canPlaceCharacter": true,
+      "label": "Кресло"
+    },
+    {
+      "id": "table",
+      "x": 0,
+      "y": 3,
+      "canPlaceCharacter": false
+    },
+    {
+      "id": "chair",
+      "x": 1,
+      "y": 3,
+      "canPlaceCharacter": true,
+      "label": "Кресло"
+    },
+    {
+      "id": "wardrobe",
+      "x": 3,
+      "y": 3,
+      "canPlaceCharacter": false
+    },
+    {
+      "id": "chair",
+      "x": 4,
+      "y": 3,
+      "canPlaceCharacter": true,
+      "label": "Кресло"
+    },
+    {
+      "id": "chair",
+      "x": 0,
+      "y": 4,
+      "canPlaceCharacter": true,
+      "label": "Кресло"
+    },
+    {
+      "id": "tv",
+      "x": 2,
+      "y": 4,
+      "canPlaceCharacter": false
+    },
+    {
+      "id": "table",
+      "x": 3,
+      "y": 4,
+      "canPlaceCharacter": false
+    },
+    {
+      "id": "chair",
+      "x": 4,
+      "y": 4,
+      "canPlaceCharacter": true,
+      "label": "Кресло"
+    }
+  ],
+  "characters": [
+    {
+      "id": "person_01",
+      "name": "Алекс",
+      "image": "assets/characters/person_01.png",
+      "clues": [
+        "Я не сижу в одном ряду с телевизором."
+      ]
+    },
+    {
+      "id": "person_02",
+      "name": "Мария",
+      "image": "assets/characters/person_02.png",
+      "clues": [
+        "Моё кресло находится в одном столбце с цветком."
+      ]
+    },
+    {
+      "id": "person_03",
+      "name": "Борис",
+      "image": "assets/characters/person_03.png",
+      "clues": [
+        "Я нахожусь не рядом со шкафом."
+      ]
+    },
+    {
+      "id": "person_04",
+      "name": "Елена",
+      "image": "assets/characters/person_04.png",
+      "clues": [
+        "Я не сижу в нижнем ряду."
+      ]
+    }
+  ],
+  "globalClues": [
+    "В каждом ряду может быть не более одного персонажа.",
+    "В каждом столбце может быть не более одного персонажа.",
+    "Персонажей можно размещать только на креслах.",
+    "У каждого персонажа есть своё кресло."
+  ],
+  "solution": {
+    "person_01": {
+      "x": 0,
+      "y": 0
+    },
+    "person_02": {
+      "x": 1,
+      "y": 1
+    },
+    "person_03": {
+      "x": 2,
+      "y": 2
+    },
+    "person_04": {
+      "x": 4,
+      "y": 3
+    }
+  },
+  "thief": "person_03"
+}

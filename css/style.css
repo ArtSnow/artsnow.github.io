@@ -1,0 +1,57 @@
+:root {
+  --bg: #20251f; --panel: #2b322a; --panel2: #343d33; --line: #4b5748;
+  --text: #f4f0e5; --muted: #b8c0b1; --accent: #e5b86b; --green: #91b58a;
+  --red: #e18b7e; --cell: #d9d1bd; --cell-line: #8f8877;
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,sans-serif; }
+button, select { font:inherit; }
+.app { width:min(100%,760px); margin:0 auto; padding:18px 16px 30px; }
+.topbar,.puzzle-heading,.section-title-row,.bottom-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.topbar { margin-bottom:20px; }
+h1 { margin:2px 0 0; font-size:30px; letter-spacing:-1px; }
+h2 { margin:3px 0 0; font-size:22px; }
+h3 { margin:0; font-size:17px; }
+.eyebrow { color:var(--accent); font-size:10px; font-weight:800; letter-spacing:1.6px; }
+.icon-button { border:1px solid var(--line); background:var(--panel); color:var(--text); width:42px; height:42px; border-radius:13px; font-size:24px; }
+.puzzle-heading { margin-bottom:15px; }
+select { max-width:145px; padding:9px 10px; border:1px solid var(--line); border-radius:10px; color:var(--text); background:var(--panel); }
+.board-section,.clues-panel,.people-panel { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:13px; margin-bottom:14px; }
+.board-wrap { width:100%; overflow:hidden; }
+.board { display:grid; gap:4px; width:100%; aspect-ratio:1; background:#59614f; padding:4px; border-radius:12px; touch-action:pan-y; }
+.cell { position:relative; min-width:0; min-height:0; border:1px solid var(--cell-line); border-radius:5px; background:var(--cell); color:#333; display:flex; align-items:center; justify-content:center; overflow:hidden; user-select:none; -webkit-user-select:none; touch-action:manipulation; }
+.cell.furniture { background:#c8bea7; }
+.cell .furniture-img { width:86%; height:86%; object-fit:contain; pointer-events:none; }
+.cell .cell-label { position:absolute; bottom:2px; left:2px; right:2px; font-size:clamp(7px,1.8vw,10px); text-align:center; color:#3d3b33; font-weight:700; pointer-events:none; }
+.cell .occupant { width:82%; height:82%; object-fit:contain; z-index:2; pointer-events:none; }
+.cell .occupant-fallback { z-index:2; font-size:clamp(18px,5vw,34px); }
+.cell .cross { position:absolute; inset:0; display:grid; place-items:center; color:#b84f43; font-size:clamp(26px,7vw,48px); font-weight:800; line-height:1; z-index:3; pointer-events:none; text-shadow:0 1px #fff; }
+.cell .manual-cross { color:#b84f43; }
+.cell .auto-cross { color:#8c625c; opacity:.78; }
+.cell .locked-mark { position:absolute; top:2px; right:4px; font-size:12px; color:#426b43; z-index:4; }
+.cell.selected-target { outline:3px solid #d79d45; outline-offset:-3px; }
+.cell.invalid { filter:grayscale(.5); }
+.board-legend { display:flex; justify-content:center; flex-wrap:wrap; gap:15px; color:var(--muted); font-size:11px; padding-top:10px; }
+.legend-chair { color:var(--green); } .legend-cross { color:var(--red); font-size:17px; }
+.global-clues { margin:10px 0 0; padding-left:20px; color:#e2e4d9; font-size:13px; line-height:1.55; }
+.small-tag { color:var(--accent); font-size:9px; letter-spacing:1px; font-weight:800; }
+.muted { color:var(--muted); font-size:11px; }
+.people-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:12px; }
+.person-card { min-width:0; display:flex; align-items:center; gap:9px; text-align:left; padding:9px; background:var(--panel2); color:var(--text); border:1px solid transparent; border-radius:13px; }
+.person-card.active { border-color:var(--accent); background:#414637; }
+.avatar { width:43px; height:43px; flex:0 0 43px; border-radius:10px; background:#d8cfbb; display:grid; place-items:center; overflow:hidden; font-size:25px; }
+.avatar img { width:100%; height:100%; object-fit:contain; }
+.person-name { display:block; font-size:13px; font-weight:750; }
+.person-status { display:block; color:var(--muted); font-size:10px; margin-top:2px; }
+.selected-clues { margin-top:12px; padding:12px; background:#222920; border-radius:12px; font-size:13px; line-height:1.5; }
+.selected-clues strong { color:var(--accent); display:block; margin-bottom:5px; }
+.selected-clues ul { margin:0; padding-left:18px; }
+.bottom-actions { margin-top:14px; }
+.primary-button,.secondary-button { border:0; border-radius:12px; padding:12px 14px; font-weight:750; font-size:13px; }
+.primary-button { background:var(--accent); color:#2b261d; flex:1; }
+.secondary-button { background:var(--panel2); color:var(--text); border:1px solid var(--line); }
+.feedback { min-height:24px; text-align:center; margin-top:12px; color:var(--muted); font-size:13px; }
+.feedback.success { color:#a8d39d; } .feedback.error { color:#f0a096; }
+footer { text-align:center; color:#8f9989; font-size:10px; margin-top:12px; }
+@media (min-width:600px) { .app { padding-top:28px; } .people-list { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media (max-width:380px) { .app { padding:13px 10px 24px; } .board-section { padding:8px; } .people-list { gap:6px; } .person-card { padding:7px; gap:6px; } .avatar { width:36px; height:36px; flex-basis:36px; } .bottom-actions { flex-direction:column; align-items:stretch; } }
